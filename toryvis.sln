@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22013.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E4DE1311-4D88-4DCF-BA57-BACDE298E5C6}"
+	ProjectSection(SolutionItems) = preProject
+		history.html = history.html
+		manifest.json = manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{794AE36F-79CF-439C-BB48-0C93F6D2437B}"
+	ProjectSection(SolutionItems) = preProject
+		css\default.css = css\default.css
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{18FC8C62-F01E-4D11-9375-11AF1CD23863}"
+	ProjectSection(SolutionItems) = preProject
+		js\utils.js = js\utils.js
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
