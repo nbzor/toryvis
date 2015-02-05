@@ -1,14 +1,22 @@
 <html>
 <head>
     <title>History</title>
-	<link rel="stylesheet" type="text/css" href="css/default.css">
+    <link rel="stylesheet" type="text/css" href="css/default.css">   
+
 </head>
 <body>
-    <input type="text" name="query" id="search" />
-    <button id="btn_search">search</button> 
-    <div style="width:90%;min-width:800px;max-width:1500px">
-        <table id="test" border="1" style="width:100%;border-color:blue"></table>
-    </div>   
-	<script src="js/utils.js"></script>  
+    <input type="text" id="input_search" />
+    <input type="button" id="btn_search" value="Search" />
+    <div id="history_container">
+        
+    </div>
+    <input type="button" id="btn_next" value="Next"/>
+    <script src="js/utils.js"></script>
+    <script src="js/jquery.js"></script>    
+    <script src="js/history.js"></script>
+    <script src="js/d3.js"></script>
+    <script src="js/eventDrops.js"></script>    
+    <script src="js/trends.js"></script>
+    <script src="js/charts.js"></script>
 </body>
 </html>

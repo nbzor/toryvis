@@ -4,7 +4,7 @@
     "description": "web browser history visualizer",
     "version": "1.0",
     "permissions": [
-        "system.cpu",
+        "topSites",
         "history"
     ],
     "chrome_url_overrides": { "history": "history.html" }   
