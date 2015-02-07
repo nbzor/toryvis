@@ -1,22 +1,31 @@
 <html>
 <head>
     <title>History</title>
-    <link rel="stylesheet" type="text/css" href="css/default.css">   
-
+    <link rel="stylesheet" type="text/css" href="css/default.css"/>
+    <link rel="stylesheet" type="text/css" href="css/compareChart.css" />
 </head>
 <body>
     <input type="text" id="input_search" />
     <input type="button" id="btn_search" value="Search" />
     <div id="history_container">
-        
+
     </div>
-    <input type="button" id="btn_next" value="Next"/>
+
+    <div>
+        <div id="chart_hour"></div>
+        <div id="chart_days"></div>
+        <div id="chart_week"></div>
+        <div id="chart_months"></div>
+        <div id="chart_compare"></div>
+    </div>
+    <input type="button" id="btn_next" value="Next" />
     <script src="js/utils.js"></script>
-    <script src="js/jquery.js"></script>    
+    <script src="js/jquery.js"></script>  
     <script src="js/history.js"></script>
     <script src="js/d3.js"></script>
-    <script src="js/eventDrops.js"></script>    
+    <script src="js/eventDrops.js"></script>
     <script src="js/trends.js"></script>
-    <script src="js/charts.js"></script>
+    <script src="js/topSites.js"></script>
+    <script src="js/charts.js"></script>   
 </body>
 </html>

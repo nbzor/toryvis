@@ -1,0 +1,27 @@
+#chart_compare > svg > .zoom {
+    fill: transparent;
+    cursor: pointer;
+}
+
+#chart_compare > svg > .y-axis path,
+#chart_compare > svg > .y-axis line,
+#chart_compare > svg > .x-axis path,
+#chart_compare > svg > .x-axis line,
+{
+    path,
+    line {
+        stroke: black;
+        fill: none;
+        stroke-width: 1px;
+    }
+}
+
+#chart_compare > svg > .y-axis g line {
+    stroke: grey;
+    fill: none;
+    stroke-width: 1px;
+}
+
+#chart_compare > svg > .graph-body .line circle {
+    opacity: 0.1;
+}
