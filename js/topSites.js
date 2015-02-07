@@ -8,10 +8,10 @@ function topSites(callback) {
         }
     });
 
-    function getHistory(text, title) {
-        chrome.history.search({ text: text, startTime: 0, maxResults: 1000000 }, function (dt) {
+    function getHistory(url, title) {
+        chrome.history.search({ text: url, startTime: 0, maxResults: 1000000 }, function (dt) {
 
-            var data = { name: title, dates: [] };
+            var data = { name: hostname(url), dates: [] };
             for (j = 0; j < dt.length; j++) {
                 data.dates.push(new Date(dt[j].lastVisitTime));
             }
