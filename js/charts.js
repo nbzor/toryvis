@@ -191,7 +191,7 @@ $(document).ready(function () {
                             return midAngle(d2) < Math.PI ? "start" : "end";
                         };
                     }).text(function (d) {
-                        return d.data.site + ' (' + d.data.count+ " - " + getPercentage(d.data,pD)+')';
+                        return d.data.site + ' (' + d.data.count+ " - " + getPercentage(d.data,dt)+')';
                     });
                 text.exit()
                     .remove();
@@ -224,7 +224,7 @@ $(document).ready(function () {
             }           
             
 
-            function getPercentage(d, aD) {                
+            function getPercentage(d, aD) {              
                 return d3.format("%")(d.count / d3.sum(aD.map(function (v) { return v.count; })));
             }
 
