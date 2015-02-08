@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     trends(callBack);
     topSites(function (d) {
-        
+
         var color = d3.scale.category10();
         var eventDropsChart = d3.chart.eventDrops()
             .eventLineColor(function (datum, index) {
@@ -18,9 +18,9 @@ $(document).ready(function () {
     function callBack(d) {
         data = d;
         new Chart('#chart_hour').create(data.hours);
-        new Chart('#chart_days').create(data.days);
-        new Chart('#chart_months').create(data.months);
-        new Chart('#chart_week').create(data.week);
+        //new Chart('#chart_days').create(data.days);
+        // new Chart('#chart_months').create(data.months);
+        //new Chart('#chart_week').create(data.week);
     }
 
     var Chart = function (id) {
@@ -29,12 +29,12 @@ $(document).ready(function () {
         var color = d3.scale.category10();
         var barColor = 'steelblue';
         var hG = {};
-        var pC = {};
+        var pC = {};      
 
         this.create = function (dt) {
             currData = dt;
             hG = histoGram(dt);
-            pC = pieChart(data.overall.sites);            
+            pC = pieChart(data.overall.sites);
         };
 
 
@@ -91,12 +91,12 @@ $(document).ready(function () {
             function mouseover(d) {  // utility function to be called on mouseover.
                 // filter for selected state.                      
                 var st = currData.filter(function (s) { return s.value == d.value; })[0];
-                pC.update(st.sites);               
+                pC.update(st.sites);
             }
 
             function mouseout(d) {    // utility function to be called on mouseout.
                 // reset the pie-chart and legend.    
-                pC.update(data.overall.sites);               
+                pC.update(data.overall.sites);
             }
 
             // create function to update the bars. This will be used by pie-chart.
@@ -123,7 +123,7 @@ $(document).ready(function () {
         }
 
         function pieChart(pD) {
-            var pieDim = { w: 500, h: 250 };
+            var pieDim = { w: 600, h: 250 };
 
 
             pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
@@ -157,49 +157,51 @@ $(document).ready(function () {
 
             function midAngle(d) {
                 return d.startAngle + (d.endAngle - d.startAngle) / 2;
-            }
+            }            
+           
 
             updateText(pD);
 
-            function updateText(data) {               
-                /*-------------- SLICE TO TEXT POLYINES--------------*/
-                var text = piesvg.select(".labels").selectAll("text").data(pie(data), function (d) { return d.data.site; });
+            function updateText(dt) {                
+                var text = piesvg.select(".labels").selectAll("text").data(pie(dt));                  
 
-                text.enter().
-                    append("text")
-                .attr("dy", ".35em")
-                .text(function (d) {
-                    return d.data.site;
-                });
+                text.enter()
+                    .append("text")
+                    .attr("dy", ".35em");
+                    
+
                 text.transition().duration(1000)
-                .attrTween("transform", function (d) {
-                    this._current = this._current || d;
-                    var interpolate = d3.interpolate(this._current, d);
-                    this._current = interpolate(0);
-                    return function (t) {
-                        var d2 = interpolate(t);
-                        var pos = outerArc.centroid(d2);
-                        pos[0] = pieDim.r * (midAngle(d2) < Math.PI ? 1 : -1);
-                        return "translate(" + pos + ")";
-                    };
-                })
-                .styleTween("text-anchor", function (d) {
-                    this._current = this._current || d;
-                    var interpolate = d3.interpolate(this._current, d);
-                    this._current = interpolate(0);
-                    return function (t) {
-                        var d2 = interpolate(t);
-                        return midAngle(d2) < Math.PI ? "start" : "end";
-                    };
-                });
+                    .attrTween("transform", function (d) {
+                        this._current = this._current || d;
+                        var interpolate = d3.interpolate(this._current, d);
+                        this._current = interpolate(0);
+                        return function (t) {
+                            var d2 = interpolate(t);
+                            var pos = outerArc.centroid(d2);
+                            pos[0] = pieDim.r * (midAngle(d2) < Math.PI ? 1 : -1);
+                            return "translate(" + pos + ")";
+                        };
+                    })
+                    .styleTween("text-anchor", function (d) {
+                        this._current = this._current || d;
+                        var interpolate = d3.interpolate(this._current, d);
+                        this._current = interpolate(0);
+                        return function (t) {
+                            var d2 = interpolate(t);
+                            return midAngle(d2) < Math.PI ? "start" : "end";
+                        };
+                    }).text(function (d) {
+                        return d.data.site + ' (' + d.data.count+ " - " + getPercentage(d.data,pD)+')';
+                    });
                 text.exit()
                     .remove();
 
+            
 
 
                 /*----------SLICE TO TEXT POLYNINES----------*/
                 var polyline = piesvg.select(".lines").selectAll("polyline")
-                    .data(pie(data), function (d) { return d.data.site; });
+                    .data(pie(dt));
 
                 polyline.enter()
                     .append("polyline");
@@ -218,15 +220,18 @@ $(document).ready(function () {
                     });
 
                 polyline.exit()
-                    .remove();
-               
-            }
+                    .remove();               
+            }           
             
+
+            function getPercentage(d, aD) {                
+                return d3.format("%")(d.count / d3.sum(aD.map(function (v) { return v.count; })));
+            }
 
             // create function to update pie-chart. This will be used by histogram.
             pC.update = function (nD) {
                 piesvg.select('.slice').selectAll("path").data(pie(nD)).transition().duration(1000)
-                    .attrTween("d", arcTween);               
+                    .attrTween("d", arcTween);
                 updateText(nD);
             }
             // Utility function to be called on mouseover a pie slice.
@@ -250,12 +255,12 @@ $(document).ready(function () {
             // how the intermediate paths should be drawn.
             function arcTween(a) {
                 var i = d3.interpolate(this._current, a);
-                this._current = i(0);                
+                this._current = i(0);
                 return function (t) { return arc(i(t)); };
             }
             return pC;
         }
-        
+
     };
 
 });
