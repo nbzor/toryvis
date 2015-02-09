@@ -36,17 +36,30 @@ $(document).ready(function () {
                 .attr('url-data', data[i].url);
             var hour = $(document.createElement('span'))
                 .append(getHour(date))
+<<<<<<< HEAD
                 .css('padding-right', '15px');    
+=======
+                .css('padding-right', '15px');
+            console.log();
+>>>>>>> origin/master
             var icon = $(document.createElement('img'))
                 .attr("src", new URL('chrome://favicon/size/16@1x/' + data[i].url))
                 .attr("height", 16)
                 .attr("width", 16)
                 .css('padding-right','5px');
 
+<<<<<<< HEAD
             var link = $(document.createElement('a'))                
                 .attr('href', data[i].url)
                 .append(data[i].title.length == 0 ? data[i].url : data[i].title)
                 .css('padding-right', '15px')                
+=======
+            var link = $(document.createElement('a'))
+                .addClass('title')
+                .attr('href', data[i].url)
+                .append(data[i].title.length == 0 ? data[i].url : data[i].title)
+                .css('padding-right', '15px');
+>>>>>>> origin/master
 
             var domain = $(document.createElement('span'))
                 .addClass('domain')
@@ -64,7 +77,11 @@ $(document).ready(function () {
 
             $(item).append(hour);
             $(item).append(icon);
+<<<<<<< HEAD
             $(item).append($(document.createElement('div')).addClass('title').css('display','inline-block').append(link));
+=======
+            $(item).append(link);
+>>>>>>> origin/master
             $(item).append(domain);
             $(item).append(rem);
 
