@@ -1,61 +1,124 @@
-<html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+    <meta charset="utf-8">
     <title>History</title>
-     <link rel="stylesheet" type="text/css" href="css/default.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
 </head>
 <body>
-<header>
-			<div class="jumbotron text-center">
-				<div class="header-container">
-					<h2>Torvys</h2>
-				</div>
-			</div>
-		</header>
+    <header>
+        <div class="jumbotron text-center">
+            <div class="header-container">
+                <h2>Torvys</h2>
+            </div>
+        </div>
+    </header>
 
-    
-    
-	<div class="container">
-		
-			<ul class="nav nav-pills">
-			
-					<li class="active"><a href="#Activity" data-toggle="tab">Activity</a></li>
-						
-						
-						
-					<li> <a href="view.html">View</a></li>
-			
-			</ul>	
-			<div class="tab-content">
-				<div id="history_container">
-					<div class="tab-pane" id="Activity"><!--Activity pane-->
-					<input type="text" id="input_search" />
-						<input type="button" id="btn_search" value="Search"/></li>
-						<hr>
-					  <input type="button" id="btn_next" value="Next" />
-				</div>
-				<div class="tab-pane" id="View" ><!--View pane-->
-					
-						
-							
-					
-				</div>
-				
-			</div>
-		</div>
-	
+
+
+    <div class="container">
+
+        <ul class="nav nav-tabs">
+
+            <li class="active"><a href="#Activity" data-toggle="tab">Activity</a></li>
+
+
+            <li> <a href="view.html">View</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+            <div class="well">
+                <div id="history_container">
+                    <div class="tab-pane" id="Activity">                     
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="input_search" placeholder="Search...">
+                                <input type="button" class="btn btn-default" id="btn_search" value="Search" />
+                            </div>
+                        </div>
+                        <!--
+                        <div id="history-day" class="container-fluid">
+                            <div class="row">
+                                <h4>Today - Monday,Feb 9,2015</h4>
+                            </div>
+                            <div class="row">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>11:00</span>
+                                        <span style="background-image: -webkit-image-set(url(chrome://favicon/size/16@1x/https://www.youtube.com/watch?v=AutChbRYI7M&list=RD5oAbSANkeCM&index=27) 1x);"></span>
+                                        <a href="http://google.ro">Title of the search on google</a>
+                                        <span class="domain">domain</span>
+                                        <button class="btn btn-default">x</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>11:00</span>
+                                        <span style="background-image: -webkit-image-set(url(chrome://favicon/size/16@1x/https://www.youtube.com/watch?v=AutChbRYI7M&list=RD5oAbSANkeCM&index=27) 1x);"></span>
+
+                                        <a class="fav" href="http://google.ro">Title of the search on google</a>
+                                        <span class="domain">domain</span>
+                                        <button class="btn btn-default">x</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>11:00</span>
+                                        <span style="background-image: -webkit-image-set(url(chrome://favicon/size/16@1x/https://www.youtube.com/watch?v=AutChbRYI7M&list=RD5oAbSANkeCM&index=27) 1x);"></span>
+                                        <a class="title" href="http://google.ro">Title of the search on google</a>
+                                        <span class="domain">domain</span>
+                                        <button class="btn btn-default">x</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="history-day" class="container-fluid">
+                            <div class="row">
+                                <h3>Tomorrow</h3>
+                                <ul class="list-group">
+
+                                    <li class="list-group-item">
+                                        <span>11:00</span>
+                                        <span style="background-image: -webkit-image-set(url(chrome://favicon/size/16@1x/https://www.youtube.com/watch?v=AutChbRYI7M&list=RD5oAbSANkeCM&index=27) 1x);"></span>
+                                        <a href="http://google.ro">Title of the search on google</a>
+                                        <span class="domain">domain</span>
+                                        <button class="btn btn-default">x</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>11:00</span>
+                                        <span style="background-image: -webkit-image-set(url(chrome://favicon/size/16@1x/https://www.youtube.com/watch?v=AutChbRYI7M&list=RD5oAbSANkeCM&index=27) 1x);"></span>
+
+                                        <a class="fav" href="http://google.ro">Title of the search on google</a>
+                                        <span class="domain">domain</span>
+                                        <button class="btn btn-default">x</button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>11:00</span>
+                                        <span style="background-image: -webkit-image-set(url(chrome://favicon/size/16@1x/https://www.youtube.com/watch?v=AutChbRYI7M&list=RD5oAbSANkeCM&index=27) 1x);"></span>
+                                        <a class="title" href="http://google.ro">Title of the search on google</a>
+                                        <span class="domain">domain</span>
+                                        <button class="btn btn-default">x</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>       
+                    -->             
+                    <button class="btn btn-default" id="btn-prev">prev</button>
+                    <button class="btn btn-default" id="btn-next">next</button>
+                </div>
+
+                <div class="tab-pane" id="View">
+                    <!--View pane-->
+                </div>
+            </div>
+        </div>
     </div>
 
 
-    
-  
-	<script src="js/jquery.js"></script>  
-	<script src="js/bootstrap.js"></script>
-    <script src="js/utils.js"></script>   	
-    <script src="js/history.js"></script>  
-    <script src="js/topSites.js"></script> 
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/history.js"></script>
+
 </body>
 </html>
