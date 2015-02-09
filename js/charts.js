@@ -42,20 +42,22 @@ $(document).ready(function () {
 
 
         function init() {
-            $(id).append($(document.createElement('div')).attr('id', 'chart_container').css('display', 'block'));
-            $(id).append($(document.createElement('div')).attr('id', 'pie_container').css('display', 'block'));           
+            $(id).append($(document.createElement('div')).attr('id', 'chart_container').addClass('row'));
+            $(id).append($(document.createElement('div')).attr('id', 'pie_container').addClass('row'));
             var chartSave = $($(document.createElement('input'))
                 .attr('type', 'button')
                 .attr('value', 'Save chart'))
-                .css('display','inline-block')
+                .addClass('btn btn-default')
+                 .css('float', 'left')
                 .click(function () {
-                    saveImage($(id + '> #chart_container > svg')[0], dim, 'chart'+'_'+id.split('_')[1] + '.png');
+                    saveImage($(id + '> #chart_container > svg')[0], dim, 'chart' + '_' + id.split('_')[1] + '.png');
                 });
 
             var chartPie = $($(document.createElement('input'))
                 .attr('type', 'button')
                 .attr('value', 'Save pie'))
-                .css('display', 'inline-block')
+                .addClass('btn btn-default')
+                .css('float', 'left')
                 .click(function () {
                     saveImage($(id + '> #pie_container > svg')[0], dim, 'pie' + '_' + id.split('_')[1] + '.png');
                 });
@@ -75,7 +77,7 @@ $(document).ready(function () {
                 .style('display', 'block')
                 .attr("width", hGDim.w + hGDim.l + hGDim.r)
                 .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
-                .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");     
+                .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
 
 
 
@@ -225,11 +227,11 @@ $(document).ready(function () {
                     }).style('font', '10px sans-serif');
                 text.exit()
                     .remove();
-               
+
                 /*----------SLICE TO TEXT POLYNINES----------*/
                 var polyline = piesvg.select(".lines").selectAll("polyline")
                     .data(pie(dt));
-                    
+
 
                 polyline.enter()
                     .append("polyline");
@@ -250,7 +252,7 @@ $(document).ready(function () {
                     .style('fill', 'none')
                     .style('stroke', 'black')
                     .style('stroke-width', '2px');
-                 
+
 
                 polyline.exit()
                     .remove();

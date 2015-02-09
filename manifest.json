@@ -5,7 +5,8 @@
     "version": "1.0",
     "permissions": [
         "topSites",
-        "history"
+        "history",
+        "chrome://favicon/"
     ],
     "chrome_url_overrides": { "history": "history.html" }   
 }

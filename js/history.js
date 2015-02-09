@@ -1,6 +1,8 @@
 $(document).ready(function () {
+
     var rows = 50;
     var lastTime;
+    var firstTime;
     var data = {};
 
     search('');
@@ -17,39 +19,83 @@ $(document).ready(function () {
 
 
     function display() {
-        var ol = $(document.createElement('ol')).attr('id', 'list')
-            .css('list-style', 'none');
+        var container = $(document.createElement('div'))
+            .addClass('container-fluid')
+            .attr('id', 'history-day');
+
+        var title = $(document.createElement('h4'))
+            .append('Today - ' + getDate(new Date()));
+
+        var list = $(document.createElement('ul'))
+            .addClass('list-group');
+
         for (var i = 0; i < data.length; i++) {
-            var li = $(document.createElement('li'));
-            var check = $(document.createElement('input')).attr('type', 'checkbox');
-            var span = $(document.createElement('span'));
-            var divtitle = $(document.createElement('div'));
-            var aref = $(document.createElement('a'));
-            var divdom = $(document.createElement('div'));
+            var date = new Date(data[i].lastVisitTime);
+            var item = $(document.createElement('li'))
+                .addClass('list-group-item')
+                .attr('url-data', data[i].url);
+            var hour = $(document.createElement('span'))
+                .append(getHour(date))
+                .css('padding-right', '15px');    
+            var icon = $(document.createElement('img'))
+                .attr("src", new URL('chrome://favicon/size/16@1x/' + data[i].url))
+                .attr("height", 16)
+                .attr("width", 16)
+                .css('padding-right','5px');
 
-            $(divtitle).css('display', 'inline-block').css('margin-left', '5px');
+            var link = $(document.createElement('a'))                
+                .attr('href', data[i].url)
+                .append(data[i].title.length == 0 ? data[i].url : data[i].title)
+                .css('padding-right', '15px')                
 
-            $(span).append(new Date(data[i].lastVisitTime).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1"));
+            var domain = $(document.createElement('span'))
+                .addClass('domain')
+                .append(hostname(data[i].url));
 
-            $(aref).attr('href', data[i].url);
-            if (data[i].title.length == 0)
-                $(aref).append(data[i].url);
-            else
-                $(aref).append(data[i].title);
+            var rem = $(document.createElement('button'))
+                .addClass('btn btn-default')
+                .append('x')
+                .click(function () {
+                    var d = $(this).parent()[0];
+                    chrome.history.deleteUrl({ url: $(d).attr('url-data') });
+                    $($(this).parent()[0]).remove();
+                    search('');
+                });
 
-            $(divtitle).append(aref);
-            $(divdom).append(hostname(data[i].url));
-            $(divdom).css('display', 'inline-block').css('margin-left', '10px');
+            $(item).append(hour);
+            $(item).append(icon);
+            $(item).append($(document.createElement('div')).addClass('title').css('display','inline-block').append(link));
+            $(item).append(domain);
+            $(item).append(rem);
 
-            $(li).append(check);
-            $(li).append(span);
-            $(li).append(divtitle);
-            $(li).append(divdom);
-
-            $(ol).append(li);
+            $(list).append(item);
         }
-        $('#list').remove();
-        $('#history_container').append(ol);
+
+        $('#history-day').remove();
+        $(container).append($(document.createElement('div')).addClass('row').append(title));
+        $(container).append($(document.createElement('div')).addClass('row').append(list));
+        $(container).insertBefore('#btn-prev');
+    }
+
+
+    function getHour(d) {
+        var h = d.getHours().toString();
+        var m = d.getMinutes().toString();
+        if (h.length == 1)
+            h = '0' + h;
+        if (m.length == 1)
+            m = '0' + m;        
+        return h + ':' + m;
+    }
+
+    function getDate(d) {
+        var arr = d.toString().split(' ');
+
+        return arr[0] + ',' + arr[1] + ' ' + arr[2] + ',' + arr[3];
+    }
+
+    function compareDate(date) {
+
     }
 
     function search(t, d) {
@@ -61,7 +107,8 @@ $(document).ready(function () {
 
     function callback(d) {
         data = d;
-        lastTime = d[d.length-1].lastVisitTime;
+        lastTime = d[d.length - 1].lastVisitTime;
+        firstTime = d[0].lastVisitTime;
         display();
     }
 });
