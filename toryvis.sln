@@ -11,16 +11,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{794AE36F-79CF-439C-BB48-0C93F6D2437B}"
 	ProjectSection(SolutionItems) = preProject
+		css\bootstrap.css = css\bootstrap.css
+		css\compareChart.css = css\compareChart.css
 		css\default.css = css\default.css
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{18FC8C62-F01E-4D11-9375-11AF1CD23863}"
 	ProjectSection(SolutionItems) = preProject
+		js\bootstrap.js = js\bootstrap.js
 		js\charts.js = js\charts.js
 		js\d3.js = js\d3.js
 		js\eventDrops.js = js\eventDrops.js
 		js\history.js = js\history.js
 		js\jquery.js = js\jquery.js
+		js\saveChart.js = js\saveChart.js
+		js\topSites.js = js\topSites.js
 		js\trends.js = js\trends.js
 		js\utils.js = js\utils.js
 	EndProjectSection

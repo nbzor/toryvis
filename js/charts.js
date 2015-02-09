@@ -5,7 +5,7 @@ $(document).ready(function () {
     trends(callBack);
     topSites(function (d) {
 
-        var color = d3.scale.category10();
+        var color = d3.scale.category20();
         var eventDropsChart = d3.chart.eventDrops()
             .eventLineColor(function (datum, index) {
                 return color(index);
@@ -18,9 +18,9 @@ $(document).ready(function () {
     function callBack(d) {
         data = d;
         new Chart('#chart_hour').create(data.hours);
-        //new Chart('#chart_days').create(data.days);
-        // new Chart('#chart_months').create(data.months);
-        //new Chart('#chart_week').create(data.week);
+        new Chart('#chart_days').create(data.days);
+        new Chart('#chart_months').create(data.months);
+        new Chart('#chart_week').create(data.week);
     }
 
     var Chart = function (id) {
@@ -29,28 +29,55 @@ $(document).ready(function () {
         var color = d3.scale.category10();
         var barColor = 'steelblue';
         var hG = {};
-        var pC = {};      
+        var pC = {};
+        var dim = { w: 700, h: 300 };
+
 
         this.create = function (dt) {
             currData = dt;
+            init();
             hG = histoGram(dt);
             pC = pieChart(data.overall.sites);
         };
 
 
+        function init() {
+            $(id).append($(document.createElement('div')).attr('id', 'chart_container').css('display', 'block'));
+            $(id).append($(document.createElement('div')).attr('id', 'pie_container').css('display', 'block'));           
+            var chartSave = $($(document.createElement('input'))
+                .attr('type', 'button')
+                .attr('value', 'Save chart'))
+                .css('display','inline-block')
+                .click(function () {
+                    saveImage($(id + '> #chart_container > svg')[0], dim, 'chart'+'_'+id.split('_')[1] + '.png');
+                });
+
+            var chartPie = $($(document.createElement('input'))
+                .attr('type', 'button')
+                .attr('value', 'Save pie'))
+                .css('display', 'inline-block')
+                .click(function () {
+                    saveImage($(id + '> #pie_container > svg')[0], dim, 'pie' + '_' + id.split('_')[1] + '.png');
+                });
+
+            $(id).append(chartSave);
+            $(id).append(chartPie);
+        }
+
         function histoGram(fD) {
             var hGDim = { t: 60, r: 0, b: 30, l: 0 };
-            hGDim.w = 700 - hGDim.l - hGDim.r,
-            hGDim.h = 300 - hGDim.t - hGDim.b;
+            hGDim.w = dim.w - hGDim.l - hGDim.r,
+            hGDim.h = dim.h - hGDim.t - hGDim.b;
+
 
             //create svg for histogram.           
-            var hGsvg = d3.select(id).append("svg")
+            var hGsvg = d3.select(id + '> #chart_container').append("svg")
+                .style('display', 'block')
                 .attr("width", hGDim.w + hGDim.l + hGDim.r)
-                .attr('id', 'histogram')
                 .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
-                .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
+                .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");     
 
-            $(id).append($(document.createElement('div')).attr('id', 'container_pie').css('display', 'block'));
+
 
             // create function for x-axis mapping.
             var x = d3.scale.ordinal().rangeRoundBands([0, hGDim.w], 0.1)
@@ -59,7 +86,9 @@ $(document).ready(function () {
             // Add x-axis to the histogram svg.
             hGsvg.append("g").attr("class", "x axis")
                 .attr("transform", "translate(0," + hGDim.h + ")")
-                .call(d3.svg.axis().scale(x).orient("bottom"));
+                .call(d3.svg.axis().scale(x).orient("bottom"))
+                .style('font', '9px sans-serif');
+
 
             // Create function for y-axis map.
             var y = d3.scale.linear().range([hGDim.h, 0])
@@ -86,7 +115,8 @@ $(document).ready(function () {
             bars.append("text").text(function (d) { return d3.format(",")(d.count) })
                 .attr("x", function (d) { return x(d.value) + x.rangeBand() / 2; })
                 .attr("y", function (d) { return y(d.count) - 5; })
-                .attr("text-anchor", "middle");
+                .attr("text-anchor", "middle")
+                .style('font', '10px sans-serif');
 
             function mouseover(d) {  // utility function to be called on mouseover.
                 // filter for selected state.                      
@@ -134,7 +164,7 @@ $(document).ready(function () {
 
 
             // create svg for pie chart.            
-            var piesvg = d3.select(id + '> #container_pie').append("svg")
+            var piesvg = d3.select(id + '> #pie_container').append("svg")
                 .attr("width", pieDim.w).attr("height", pieDim.h).append("g")
                 .attr("transform", "translate(" + pieDim.w / 2 + "," + pieDim.h / 2 + ")");
 
@@ -157,18 +187,18 @@ $(document).ready(function () {
 
             function midAngle(d) {
                 return d.startAngle + (d.endAngle - d.startAngle) / 2;
-            }            
-           
+            }
+
 
             updateText(pD);
 
-            function updateText(dt) {                
-                var text = piesvg.select(".labels").selectAll("text").data(pie(dt));                  
+            function updateText(dt) {
+                var text = piesvg.select(".labels").selectAll("text").data(pie(dt));
 
                 text.enter()
                     .append("text")
                     .attr("dy", ".35em");
-                    
+
 
                 text.transition().duration(1000)
                     .attrTween("transform", function (d) {
@@ -191,17 +221,15 @@ $(document).ready(function () {
                             return midAngle(d2) < Math.PI ? "start" : "end";
                         };
                     }).text(function (d) {
-                        return d.data.site + ' (' + d.data.count+ " - " + getPercentage(d.data,dt)+')';
-                    });
+                        return d.data.site + ' (' + d.data.count + " - " + getPercentage(d.data, dt) + ')';
+                    }).style('font', '10px sans-serif');
                 text.exit()
                     .remove();
-
-            
-
-
+               
                 /*----------SLICE TO TEXT POLYNINES----------*/
                 var polyline = piesvg.select(".lines").selectAll("polyline")
                     .data(pie(dt));
+                    
 
                 polyline.enter()
                     .append("polyline");
@@ -217,14 +245,19 @@ $(document).ready(function () {
                             pos[0] = pieDim.r * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
                             return [arc.centroid(d2), outerArc.centroid(d2), pos];
                         };
-                    });
+                    })
+                    .style('opacity', '.3')
+                    .style('fill', 'none')
+                    .style('stroke', 'black')
+                    .style('stroke-width', '2px');
+                 
 
                 polyline.exit()
-                    .remove();               
-            }           
-            
+                    .remove();
+            }
 
-            function getPercentage(d, aD) {              
+
+            function getPercentage(d, aD) {
                 return d3.format("%")(d.count / d3.sum(aD.map(function (v) { return v.count; })));
             }
 

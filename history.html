@@ -1,31 +1,61 @@
 <html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
     <title>History</title>
-    <link rel="stylesheet" type="text/css" href="css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="css/compareChart.css" />
+     <link rel="stylesheet" type="text/css" href="css/default.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
 </head>
 <body>
-    <input type="text" id="input_search" />
-    <input type="button" id="btn_search" value="Search" />
-    <div id="history_container">
+<header>
+			<div class="jumbotron text-center">
+				<div class="header-container">
+					<h2>Torvys</h2>
+				</div>
+			</div>
+		</header>
 
+    
+    
+	<div class="container">
+		
+			<ul class="nav nav-pills">
+			
+					<li class="active"><a href="#Activity" data-toggle="tab">Activity</a></li>
+						
+						
+						
+					<li> <a href="view.html">View</a></li>
+			
+			</ul>	
+			<div class="tab-content">
+				<div id="history_container">
+					<div class="tab-pane" id="Activity"><!--Activity pane-->
+					<input type="text" id="input_search" />
+						<input type="button" id="btn_search" value="Search"/></li>
+						<hr>
+					  <input type="button" id="btn_next" value="Next" />
+				</div>
+				<div class="tab-pane" id="View" ><!--View pane-->
+					
+						
+							
+					
+				</div>
+				
+			</div>
+		</div>
+	
     </div>
 
-    <div>
-        <div id="chart_hour"></div>
-        <div id="chart_days"></div>
-        <div id="chart_week"></div>
-        <div id="chart_months"></div>
-        <div id="chart_compare"></div>
-    </div>
-    <input type="button" id="btn_next" value="Next" />
-    <script src="js/utils.js"></script>
-    <script src="js/jquery.js"></script>  
-    <script src="js/history.js"></script>
-    <script src="js/d3.js"></script>
-    <script src="js/eventDrops.js"></script>
-    <script src="js/trends.js"></script>
-    <script src="js/topSites.js"></script>
-    <script src="js/charts.js"></script>   
+
+    
+  
+	<script src="js/jquery.js"></script>  
+	<script src="js/bootstrap.js"></script>
+    <script src="js/utils.js"></script>   	
+    <script src="js/history.js"></script>  
+    <script src="js/topSites.js"></script> 
 </body>
 </html>
