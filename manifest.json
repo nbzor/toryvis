@@ -6,7 +6,8 @@
     "permissions": [
         "topSites",
         "history",
-        "chrome://favicon/"
+        "chrome://favicon/",
+        "bookmarks"
     ],
     "chrome_url_overrides": { "history": "history.html" }   
 }
