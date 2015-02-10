@@ -30,7 +30,7 @@ $(document).ready(function () {
         var barColor = 'steelblue';
         var hG = {};
         var pC = {};
-        var dim = { w: 700, h: 300 };
+        var dim = { w: 730, h: 300 };
 
 
         this.create = function (dt) {
@@ -46,7 +46,7 @@ $(document).ready(function () {
             $(id).append($(document.createElement('div')).attr('id', 'pie_container').addClass('row'));
             var chartSave = $($(document.createElement('input'))
                 .attr('type', 'button')
-                .attr('value', 'Save chart'))
+                .attr('value', 'Save Img Chart'))
                 .addClass('btn btn-default')
                  .css('float', 'left')
                 .click(function () {
@@ -55,15 +55,35 @@ $(document).ready(function () {
 
             var chartPie = $($(document.createElement('input'))
                 .attr('type', 'button')
-                .attr('value', 'Save pie'))
+                .attr('value', 'Save Img Pie'))
                 .addClass('btn btn-default')
                 .css('float', 'left')
                 .click(function () {
                     saveImage($(id + '> #pie_container > svg')[0], dim, 'pie' + '_' + id.split('_')[1] + '.png');
                 });
 
+            var chartSVG = $($(document.createElement('input'))
+                .attr('type', 'button')
+                .attr('value', 'Save SVG Chart'))
+                .addClass('btn btn-default')
+                 .css('float', 'right')
+                .click(function () {
+                    saveSvg($(id + '> #chart_container > svg')[0],'chart' + '_' + id.split('_')[1] + '.svg');
+                });
+
+            var pieSVG = $($(document.createElement('input'))
+                .attr('type', 'button')
+                .attr('value', 'Save SVG Pie'))
+                .addClass('btn btn-default')
+                .css('float', 'right')
+                .css('padding-right','10px')
+                .click(function () {
+                    saveSvg($(id + '> #pie_container > svg')[0],'pie' + '_' + id.split('_')[1] + '.svg');
+                });
             $(id).append(chartSave);
             $(id).append(chartPie);
+            $(id).append(pieSVG);
+            $(id).append(chartSVG);
         }
 
         function histoGram(fD) {
@@ -89,7 +109,7 @@ $(document).ready(function () {
             hGsvg.append("g").attr("class", "x axis")
                 .attr("transform", "translate(0," + hGDim.h + ")")
                 .call(d3.svg.axis().scale(x).orient("bottom"))
-                .style('font', '9px sans-serif');
+                .style('font', '14px sans-serif');
 
 
             // Create function for y-axis map.
@@ -118,7 +138,7 @@ $(document).ready(function () {
                 .attr("x", function (d) { return x(d.value) + x.rangeBand() / 2; })
                 .attr("y", function (d) { return y(d.count) - 5; })
                 .attr("text-anchor", "middle")
-                .style('font', '10px sans-serif');
+                .style('font', '14px sans-serif');
 
             function mouseover(d) {  // utility function to be called on mouseover.
                 // filter for selected state.                      
@@ -155,7 +175,7 @@ $(document).ready(function () {
         }
 
         function pieChart(pD) {
-            var pieDim = { w: 600, h: 250 };
+            var pieDim = { w: 730, h: 250 };
 
 
             pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
@@ -224,7 +244,7 @@ $(document).ready(function () {
                         };
                     }).text(function (d) {
                         return d.data.site + ' (' + d.data.count + " - " + getPercentage(d.data, dt) + ')';
-                    }).style('font', '10px sans-serif');
+                    }).style('font', '14px sans-serif');
                 text.exit()
                     .remove();
 

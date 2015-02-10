@@ -1,80 +1,122 @@
 $(document).ready(function () {
 
     var rows = 50;
-    var lastTime;
-    var firstTime;
     var data = {};
+    var start = 0;
+    var end = rows;
+    var totalData = {};
 
     search('');
 
-    $('#btn_search').click(function () {
-        if ($('#input_search').val().length > 0) {
+    $('#input_search').keypress(function (e) {
+        if (e.keyCode == 13) {
             search($('#input_search').val());
         }
     });
 
-    $('#btn_next').click(function () {
-        search('', lastTime);
-    })
+    $('#btn_delete').click(function () {
+        $('#input_search').val("");
+        search('');
+    });
+
+    $('#btn_search').click(function () {
+        search($('#input_search').val());
+    });
+
+    $('#btn-next').click(function () {
+        if (start + rows < totalData.length) {
+            start += rows;
+            end += rows;
+            data = totalData.slice(start, end);
+            display();
+        } else {
+            data = totalData.slice(start, totalData.length);
+        }
+    });
+
+    $('#btn-prev').click(function () {
+        if (start - rows >= 0) {
+            start -= rows;
+            end -= rows;
+            data = totalData.slice(start, end);
+            display();
+        }
+    });
 
 
-    function display() {
+    function createItem(d) {
+        var date = new Date(d.lastVisitTime);
+        var item = $(document.createElement('li'))
+                .addClass('list-group-item')
+                .attr('url-data', d.url);
+        var hour = $(document.createElement('span'))
+            .append(getHour(date))
+            .css('padding-right', '15px');
+        var icon = $(document.createElement('img'))
+            .attr("src", new URL('chrome://favicon/size/16@1x/' + d.url))
+            .attr("height", 16)
+            .attr("width", 16)
+            .css('padding-right', '5px');
+
+        var link = $(document.createElement('a'))
+            .attr('href', d.url)
+            .append(d.title.length == 0 ? d.url : d.title)
+            .css('padding-right', '15px')
+
+        var domain = $(document.createElement('span'))
+            .addClass('domain')
+            .append(hostname(d.url));
+
+        var rem = $(document.createElement('button'))
+            .addClass('btn btn-default')
+            .append('x')
+            .click(function () {
+                var d = $(this).parent()[0];
+                chrome.history.deleteUrl({ url: $(d).attr('url-data') });
+                $($(this).parent()[0]).remove();
+                search('');
+            });
+
+        $(item).append(hour);
+        $(item).append(icon);
+        $(item).append($(document.createElement('div')).addClass('title').css('display', 'inline-block').append(link));
+        $(item).append(domain);
+        $(item).append(rem);
+        return item;
+    }
+
+    function createTable(t) {
         var container = $(document.createElement('div'))
-            .addClass('container-fluid')
-            .attr('id', 'history-day');
+           .addClass('container-fluid')
+           .attr('id', 'history-day');
 
         var title = $(document.createElement('h4'))
-            .append('Today - ' + getDate(new Date()));
+            .append(t);
 
         var list = $(document.createElement('ul'))
             .addClass('list-group');
 
-        for (var i = 0; i < data.length; i++) {
-            var date = new Date(data[i].lastVisitTime);
-            var item = $(document.createElement('li'))
-                .addClass('list-group-item')
-                .attr('url-data', data[i].url);
-            var hour = $(document.createElement('span'))
-                .append(getHour(date))
-                .css('padding-right', '15px');    
-            var icon = $(document.createElement('img'))
-                .attr("src", new URL('chrome://favicon/size/16@1x/' + data[i].url))
-                .attr("height", 16)
-                .attr("width", 16)
-                .css('padding-right','5px');
-
-            var link = $(document.createElement('a'))                
-                .attr('href', data[i].url)
-                .append(data[i].title.length == 0 ? data[i].url : data[i].title)
-                .css('padding-right', '15px')                
-
-            var domain = $(document.createElement('span'))
-                .addClass('domain')
-                .append(hostname(data[i].url));
-
-            var rem = $(document.createElement('button'))
-                .addClass('btn btn-default')
-                .append('x')
-                .click(function () {
-                    var d = $(this).parent()[0];
-                    chrome.history.deleteUrl({ url: $(d).attr('url-data') });
-                    $($(this).parent()[0]).remove();
-                    search('');
-                });
-
-            $(item).append(hour);
-            $(item).append(icon);
-            $(item).append($(document.createElement('div')).addClass('title').css('display','inline-block').append(link));
-            $(item).append(domain);
-            $(item).append(rem);
-
-            $(list).append(item);
-        }
-
-        $('#history-day').remove();
         $(container).append($(document.createElement('div')).addClass('row').append(title));
         $(container).append($(document.createElement('div')).addClass('row').append(list));
-        $(container).insertBefore('#btn-prev');
+        return { container: container, list: list };
+    }
+
+    function display() {
+        var table = {};
+        $('#history-day').remove();
+        if (data.length > 0) {
+            table = createTable(getDate(new Date(data[0].lastVisitTime)));
+        }
+
+        for (var i = 1; i < data.length; i++) {         
+            if (!compareDate(new Date(data[i - 1].lastVisitTime), new Date(data[i].lastVisitTime))) {
+                $(table.container).insertBefore('#btn-prev');
+                table = createTable(getDate(new Date(data[i].lastVisitTime)));
+            }
+            $(table.list).append(createItem(data[i]));
+        }
+        $(table.container).insertBefore('#btn-prev');
+
     }
 
 
@@ -84,31 +126,32 @@ $(document).ready(function () {
         if (h.length == 1)
             h = '0' + h;
         if (m.length == 1)
-            m = '0' + m;        
+            m = '0' + m;
         return h + ':' + m;
     }
 
     function getDate(d) {
         var arr = d.toString().split(' ');
-
         return arr[0] + ',' + arr[1] + ' ' + arr[2] + ',' + arr[3];
     }
 
-    function compareDate(date) {
-
+    function compareDate(d1, d2) {
+        return (d1.getDate() == d2.getDate() &&
+      d1.getMonth() == d2.getMonth() &&
+      d1.getFullYear() == d2.getFullYear());
     }
 
     function search(t, d) {
-        if (d != undefined) {
-            chrome.history.search({ text: t, endTime: lastTime, maxResults: rows }, callback);
-        } else
-            chrome.history.search({ text: t, startTime: 0, maxResults: rows }, callback);
+        if (d == undefined) {
+            chrome.history.search({ text: t, startTime: 0, maxResults: 1000000 }, callback);
+        }
     }
 
     function callback(d) {
-        data = d;
-        lastTime = d[d.length - 1].lastVisitTime;
-        firstTime = d[0].lastVisitTime;
+        totalData = d;
+        start = 0;
+        end = rows;
+        data = totalData.slice(start, end);
         display();
     }
 });
