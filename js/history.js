@@ -8,8 +8,7 @@ $(document).ready(function () {
     var bookmarks = {};  
 
     getBookmarks(function (d) {
-        bookmarks = d;
-        console.log(d);
+        bookmarks = d;        
         search('');       
     });    
 
@@ -98,7 +97,7 @@ $(document).ready(function () {
 
     function contains(d) {
         for (var i = 0; i < bookmarks.length; i++) {            
-            if (hostname(d.url) == hostname(bookmarks[i].url))
+            if (d.url == bookmarks[i].url)
                 return true;
         }
         return false;
