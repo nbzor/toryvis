@@ -6,5 +6,5 @@ a few ways: the classic one, like in Google Chrome or it can view it by using th
 on a few basics: the activity displayed by hours, days in a week, days in a month and by months in a year.
 
 Technoogies used:
-1. For the interface Bootstrap was used
-2. For charts d3js library and jquery
++ For the interface Bootstrap was used
++ For charts d3js library and jquery
